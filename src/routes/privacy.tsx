@@ -5,7 +5,7 @@ import { seo } from "@/lib/seo";
 export const Route = createFileRoute("/privacy")({
   head: () => seo("Privacy Policy", "How TradeXify collects, uses and protects your data under GDPR."),
   component: () => (
-    <div className="card-premium space-y-3 p-5 text-sm leading-relaxed text-muted-foreground">
+    <div className="mx-auto max-w-2xl space-y-5 text-sm leading-relaxed text-muted-foreground">
       <PageTitle title="Privacy Policy" sub="Last updated: October 2026" />
       <h2 className="font-semibold text-foreground">Data we collect</h2>
       <p>Contact details you submit (name, email, message) and basic, anonymised usage analytics.</p>

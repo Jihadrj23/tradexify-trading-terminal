@@ -1,0 +1,5 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { PageTitle } from '@/components/app-shell';
+import { seo } from '@/lib/seo';
+export const Route = createFileRoute('/risk')({ head: () => seo('Risk Disclaimer', 'Important trading risk information for TradeXify gold, forex and cryptocurrency signals.'), component: RiskPage });
+function RiskPage() { return <div className="mx-auto max-w-2xl space-y-5 text-sm leading-relaxed text-muted-foreground"><PageTitle title="Risk Disclaimer" /><p>Trading carries high risk and may not be suitable for all investors. Leveraged products like Forex, Gold and Crypto can result in losses exceeding your deposit.</p><h2 className="font-medium text-foreground">Not financial advice</h2><p>Signals are for educational purposes only and are not financial advice. You are solely responsible for your trading decisions.</p><h2 className="font-medium text-foreground">Market data & performance</h2><p>Past performance does not guarantee future results. Prices and signals may be delayed or inaccurate. Demo quotes and sample signals are not executable market prices.</p></div>; }
