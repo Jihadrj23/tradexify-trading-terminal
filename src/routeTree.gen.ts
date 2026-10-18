@@ -15,7 +15,9 @@ import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as ChartsRouteImport } from './routes/charts'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as MenuRouteImport } from './routes/menu'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RiskRouteImport } from './routes/risk'
 import { Route as SignalsRouteImport } from './routes/signals'
 import { Route as TermsRouteImport } from './routes/terms'
 
@@ -49,9 +51,19 @@ const HistoryRoute = HistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MenuRoute = MenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiskRoute = RiskRouteImport.update({
+  id: '/risk',
+  path: '/risk',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignalsRoute = SignalsRouteImport.update({
@@ -72,7 +84,9 @@ export interface FileRoutesByFullPath {
   '/charts': typeof ChartsRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/menu': typeof MenuRoute
   '/privacy': typeof PrivacyRoute
+  '/risk': typeof RiskRoute
   '/signals': typeof SignalsRoute
   '/terms': typeof TermsRoute
 }
@@ -83,7 +97,9 @@ export interface FileRoutesByTo {
   '/charts': typeof ChartsRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/menu': typeof MenuRoute
   '/privacy': typeof PrivacyRoute
+  '/risk': typeof RiskRoute
   '/signals': typeof SignalsRoute
   '/terms': typeof TermsRoute
 }
@@ -95,7 +111,9 @@ export interface FileRoutesById {
   '/charts': typeof ChartsRoute
   '/contact': typeof ContactRoute
   '/history': typeof HistoryRoute
+  '/menu': typeof MenuRoute
   '/privacy': typeof PrivacyRoute
+  '/risk': typeof RiskRoute
   '/signals': typeof SignalsRoute
   '/terms': typeof TermsRoute
 }
@@ -108,7 +126,9 @@ export interface FileRouteTypes {
     | '/charts'
     | '/contact'
     | '/history'
+    | '/menu'
     | '/privacy'
+    | '/risk'
     | '/signals'
     | '/terms'
   fileRoutesByTo: FileRoutesByTo
@@ -119,7 +139,9 @@ export interface FileRouteTypes {
     | '/charts'
     | '/contact'
     | '/history'
+    | '/menu'
     | '/privacy'
+    | '/risk'
     | '/signals'
     | '/terms'
   id:
@@ -130,7 +152,9 @@ export interface FileRouteTypes {
     | '/charts'
     | '/contact'
     | '/history'
+    | '/menu'
     | '/privacy'
+    | '/risk'
     | '/signals'
     | '/terms'
   fileRoutesById: FileRoutesById
@@ -142,7 +166,9 @@ export interface RootRouteChildren {
   ChartsRoute: typeof ChartsRoute
   ContactRoute: typeof ContactRoute
   HistoryRoute: typeof HistoryRoute
+  MenuRoute: typeof MenuRoute
   PrivacyRoute: typeof PrivacyRoute
+  RiskRoute: typeof RiskRoute
   SignalsRoute: typeof SignalsRoute
   TermsRoute: typeof TermsRoute
 }
@@ -191,11 +217,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/menu': {
+      id: '/menu'
+      path: '/menu'
+      fullPath: '/menu'
+      preLoaderRoute: typeof MenuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/risk': {
+      id: '/risk'
+      path: '/risk'
+      fullPath: '/risk'
+      preLoaderRoute: typeof RiskRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signals': {
@@ -222,7 +262,9 @@ const rootRouteChildren: RootRouteChildren = {
   ChartsRoute: ChartsRoute,
   ContactRoute: ContactRoute,
   HistoryRoute: HistoryRoute,
+  MenuRoute: MenuRoute,
   PrivacyRoute: PrivacyRoute,
+  RiskRoute: RiskRoute,
   SignalsRoute: SignalsRoute,
   TermsRoute: TermsRoute,
 }

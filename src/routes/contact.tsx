@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { PageTitle } from "@/components/app-shell";
+import { Button } from "@/components/ui/button";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
@@ -18,7 +19,7 @@ function Contact() {
     setSent(true);
   };
   return (
-    <div className="card-premium p-5">
+    <div className="mx-auto max-w-2xl">
       <PageTitle title="Contact Us" sub="support@tradexify.online" />
       {sent ? (
         <p className="rounded-lg bg-bull/15 p-4 text-sm text-bull">Thanks! Your message has been received — we'll reply within 24 hours.</p>
@@ -28,7 +29,7 @@ function Contact() {
           <input required type="email" name="email" placeholder="Email address" maxLength={255} className={field} />
           <input name="subject" placeholder="Subject" maxLength={150} className={field} />
           <textarea required name="message" placeholder="Your message" rows={5} maxLength={2000} className={field} />
-          <button className="w-full rounded-lg bg-brand-gradient py-3 font-semibold text-primary-foreground shadow-glow">Send Message</button>
+          <Button type="submit" className="w-full">Send Message</Button>
         </form>
       )}
     </div>
