@@ -1,112 +1,52 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { LineChart, ListOrdered, Zap, History, Bell } from "lucide-react";
+import { ChartCandlestick, List, ArrowLeftRight, Menu, ChevronLeft } from "lucide-react";
 import { quotes, type Quote } from "@/lib/mock-data";
+import { useTheme } from "@/components/theme-provider";
 
-export function Logo({ size = 36 }: { size?: number }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div style={{ width: size, height: size }} className="grid place-items-center rounded-xl border border-border bg-surface shadow-glow">
-        <span className="font-mono text-sm font-bold tracking-tighter"><span className="text-primary">T</span><span className="text-gold">X</span></span>
-      </div>
-      <span className="text-lg font-bold tracking-tight">Trade<span className="text-brand-gradient">Xify</span></span>
-    </div>
-  );
+export function Logo() {
+  return <div className="flex items-center gap-3"><div className="grid h-8 w-8 place-items-center rounded border border-foreground/70 font-mono text-sm font-bold">TX</div><span className="text-lg font-semibold">TradeXify<span className="ml-2 hidden text-[10px] font-normal text-muted-foreground sm:inline">TERMINAL</span></span></div>;
 }
-
 const nav = [
-  { to: "/", label: "Quotes", icon: ListOrdered },
-  { to: "/charts", label: "Charts", icon: LineChart },
-  { to: "/signals", label: "Signals", icon: Zap },
-  { to: "/history", label: "History", icon: History },
-  { to: "/alerts", label: "Alerts", icon: Bell },
+  { to: '/', label: 'Watchlist', icon: List }, { to: '/charts', label: 'Chart', icon: ChartCandlestick },
+  { to: '/signals', label: 'Signals', icon: ArrowLeftRight }, { to: '/menu', label: 'Menu', icon: Menu },
 ] as const;
-
 export function AppShell({ children }: { children: ReactNode }) {
-  return (
-    <div className="mx-auto min-h-screen max-w-3xl pb-24">
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/85 px-4 py-3 backdrop-blur">
-        <Link to="/"><Logo /></Link>
-        <span className="flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-bull" /> Live
-        </span>
-      </header>
-      <main className="px-4 pt-4">{children}</main>
-      <Footer />
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 backdrop-blur">
-        <div className="mx-auto grid max-w-3xl grid-cols-5">
-          {nav.map(({ to, label, icon: Icon }) => (
-            <Link key={to} to={to} activeOptions={{ exact: true }}
-              className="flex flex-col items-center gap-1 py-2.5 text-[11px] text-muted-foreground transition-colors data-[status=active]:text-primary">
-              <Icon className="h-5 w-5" />{label}
-            </Link>
-          ))}
-        </div>
-      </nav>
-    </div>
-  );
+  const path = useRouterState({ select: s => s.location.pathname });
+  const chart = path === '/charts';
+  const secondary = !['/', '/signals', '/menu', '/charts'].includes(path);
+  return <div className="min-h-dvh">
+    {!chart && <header className="flex h-16 items-center justify-between border-b border-border px-5 md:px-8"><Link to="/" aria-label="TradeXify watchlist"><Logo /></Link><span className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" />DEMO FEED</span></header>}
+    <main className={chart ? '' : 'terminal-content mx-auto max-w-7xl px-5 pt-7 md:px-8 md:pt-9'}>
+      {secondary && <Link to="/menu" className="mb-6 inline-flex items-center gap-1 text-xs text-muted-foreground"><ChevronLeft className="h-4 w-4" />Menu</Link>}{children}
+    </main>
+    <nav aria-label="Main navigation" className="terminal-nav fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background">
+      <div className="mx-auto grid h-16 max-w-2xl grid-cols-4">{nav.map(({ to, label, icon: Icon }) => <Link key={to} to={to} activeOptions={{ exact: true }} className="relative flex flex-col items-center justify-center gap-1.5 text-[10px] text-muted-foreground transition-colors data-[status=active]:text-foreground"><Icon className="h-5 w-5" strokeWidth={1.5} />{label}<span className="absolute top-0 hidden h-0.5 w-8 bg-foreground in-data-[status=active]:block" /></Link>)}</div>
+    </nav>
+  </div>;
 }
-
-function Footer() {
-  return (
-    <footer className="mt-10 border-t border-border px-4 py-6 text-xs text-muted-foreground">
-      <p className="card-premium p-3 leading-relaxed">
-        <strong className="text-gold">Risk Disclaimer:</strong> Trading carries high risk and may not be suitable for all investors. Leveraged products like Forex, Gold and Crypto can result in losses exceeding your deposit. Signals are for educational purposes only and are not financial advice.
-      </p>
-      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-        <Link to="/about" className="hover:text-foreground">About Us</Link>
-        <Link to="/contact" className="hover:text-foreground">Contact Us</Link>
-        <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
-        <Link to="/terms" className="hover:text-foreground">Terms & Conditions</Link>
-      </div>
-      <p className="mt-4">© 2026 tradexify.online · All rights reserved.</p>
-    </footer>
-  );
-}
-
-/** Simulated tick stream — swap for a WebSocket from the Python backend. */
 export function useLiveQuotes(): Quote[] {
   const [data, setData] = useState(quotes);
   const ref = useRef(data);
   useEffect(() => {
-    const id = setInterval(() => {
-      ref.current = ref.current.map((q) => {
-        const step = q.bid * (Math.random() - 0.5) * 0.0006;
-        const bid = q.bid + step;
-        const spread = q.ask - q.bid;
-        return { ...q, bid, ask: bid + spread, high: Math.max(q.high, bid), low: Math.min(q.low, bid) };
-      });
-      setData(ref.current);
-    }, 1500);
+    const id = setInterval(() => { ref.current = ref.current.map(q => { const bid = q.bid + q.bid * (Math.random() - 0.5) * 0.0006; return { ...q, bid, ask: bid + q.ask - q.bid, high: Math.max(q.high, bid), low: Math.min(q.low, bid) }; }); setData(ref.current); }, 1500);
     return () => clearInterval(id);
   }, []);
   return data;
 }
-
 export function PageTitle({ title, sub }: { title: string; sub?: string }) {
-  return (
-    <div className="mb-4">
-      <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-      {sub && <p className="text-sm text-muted-foreground">{sub}</p>}
-    </div>
-  );
+  return <div className="mb-6"><h1 className="text-2xl font-semibold">{title}</h1>{sub && <p className="mt-2 text-xs text-muted-foreground">{sub}</p>}</div>;
 }
-
-export function TradingViewChart({ symbol = "OANDA:XAUUSD", height = 460 }: { symbol?: string; height?: number }) {
+export function TradingViewChart({ symbol = 'OANDA:XAUUSD' }: { symbol?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>';
-    const s = document.createElement("script");
-    s.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-    s.async = true;
-    s.innerHTML = JSON.stringify({
-      autosize: true, symbol, interval: "15", timezone: "Etc/UTC", theme: "dark", style: "1",
-      locale: "en", backgroundColor: "rgba(18,20,28,1)", gridColor: "rgba(255,255,255,0.04)",
-      hide_side_toolbar: false, allow_symbol_change: true, support_host: "https://www.tradingview.com",
-    });
-    el.appendChild(s);
-  }, [symbol]);
-  return <div ref={ref} className="tradingview-widget-container card-premium overflow-hidden" style={{ height }} />;
+    const el = ref.current; if (!el) return;
+    el.replaceChildren();
+    const widget = document.createElement('div'); widget.className = 'tradingview-widget-container__widget'; el.appendChild(widget);
+    const script = document.createElement('script'); script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; script.async = true;
+    script.innerHTML = JSON.stringify({ autosize: true, symbol, interval: '15', timezone: 'Etc/UTC', theme, style: '1', locale: 'en', hide_side_toolbar: false, allow_symbol_change: true, calendar: false, support_host: 'https://www.tradingview.com' }); el.appendChild(script);
+    return () => el.replaceChildren();
+  }, [symbol, theme]);
+  return <div ref={ref} aria-label="Interactive TradingView chart" className="tradingview-widget-container chart-widget" />;
 }
