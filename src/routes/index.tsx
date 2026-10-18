@@ -15,8 +15,8 @@ function Quotes() {
   if (!gold) return null;
   const filtered = qs.filter(q => (group === 'All markets' || (group === 'Metals' && ['XAUUSD', 'XAGUSD'].includes(q.symbol)) || (group === 'Crypto' && ['BTCUSD', 'ETHUSD'].includes(q.symbol)) || (group === 'Forex' && q.symbol === 'EURUSD')) && `${q.symbol} ${q.name}`.toLowerCase().includes(search.toLowerCase()));
   return <div>
-    <div className="mb-7 flex items-start justify-between"><div><p className="mb-2 font-mono text-[10px] text-muted-foreground">MARKETS / OVERVIEW</p><h1 className="text-2xl font-semibold md:text-3xl">Watchlist</h1></div><span className="mt-2 font-mono text-[10px] text-muted-foreground">USD</span></div>
-    <section className="mb-8 grid gap-7 border-y border-border py-6 md:grid-cols-[1.2fr_1fr] md:gap-10 md:py-8">
+    <div className="mb-5 flex items-start justify-between"><div><p className="mb-2 font-mono text-[10px] text-muted-foreground">MARKETS / OVERVIEW</p><h1 className="text-2xl font-semibold md:text-3xl">Watchlist</h1></div><span className="mt-2 font-mono text-[10px] text-muted-foreground">USD</span></div>
+    <section className="market-overview mb-8 grid gap-7 border-y border-border py-6 md:grid-cols-[1.2fr_1fr] md:gap-10 md:py-8">
       <div><div className="mb-3 flex items-center gap-2"><span className="grid h-7 w-7 place-items-center rounded border border-border font-mono text-[10px]">Au</span><h2 className="text-sm font-semibold">XAU / USD</h2><span className="text-xs text-muted-foreground">Gold Spot</span></div>
         <div className="flex flex-wrap items-baseline gap-4"><span className="font-mono text-4xl font-medium md:text-5xl">{gold.bid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span><span className="flex items-center font-mono text-xs text-bull"><ArrowUpRight className="h-3.5 w-3.5" />+{gold.change}%</span></div>
         <p className="mt-3 font-mono text-[10px] text-muted-foreground">GOLD SPOT / US DOLLAR</p>
