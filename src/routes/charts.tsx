@@ -5,7 +5,7 @@ import { TradingViewChart } from '@/components/app-shell';
 import { Button } from '@/components/ui/button';
 import { seo } from '@/lib/seo';
 export const Route = createFileRoute('/charts')({
-  validateSearch: (search: Record<string, unknown>): { symbol?: string } => ({ symbol: typeof search.symbol === 'string' ? search.symbol : undefined }),
+  validateSearch: (search: Record<string, unknown>): { symbol?: string | undefined } => ({ symbol: typeof search['symbol'] === 'string' ? search['symbol'] : undefined }),
   head: () => seo('Interactive Chart', 'Full-screen TradeXify TradingView charts for gold, crypto and forex markets.'), component: Charts,
 });
 const symbols = [{ l: 'XAUUSD', v: 'OANDA:XAUUSD' }, { l: 'BTCUSD', v: 'BITSTAMP:BTCUSD' }, { l: 'ETHUSD', v: 'BITSTAMP:ETHUSD' }, { l: 'XAGUSD', v: 'OANDA:XAGUSD' }, { l: 'EURUSD', v: 'OANDA:EURUSD' }];

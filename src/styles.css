@@ -50,4 +50,6 @@
 .quote-row { grid-template-columns: minmax(120px, 1fr) 100px 112px 112px 80px; }
 @media (max-width: 767px) {
   .quote-row { grid-template-columns: minmax(100px, 1fr) 88px 88px; }
+  .terminal-content { padding-top: 20px; }
+  .market-overview { gap: 20px; margin-bottom: 20px; padding-top: 20px; padding-bottom: 20px; }
 }
