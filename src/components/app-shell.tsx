@@ -38,15 +38,8 @@ export function PageTitle({ title, sub }: { title: string; sub?: string }) {
   return <div className="mb-6"><h1 className="text-2xl font-semibold">{title}</h1>{sub && <p className="mt-2 text-xs text-muted-foreground">{sub}</p>}</div>;
 }
 export function TradingViewChart({ symbol = 'OANDA:XAUUSD' }: { symbol?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    el.replaceChildren();
-    const widget = document.createElement('div'); widget.className = 'tradingview-widget-container__widget'; el.appendChild(widget);
-    const script = document.createElement('script'); script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'; script.async = true;
-    script.innerHTML = JSON.stringify({ autosize: true, symbol, interval: '15', timezone: 'Etc/UTC', theme, style: '1', locale: 'en', hide_side_toolbar: false, allow_symbol_change: true, calendar: false, support_host: 'https://www.tradingview.com' }); el.appendChild(script);
-    return () => el.replaceChildren();
-  }, [symbol, theme]);
-  return <div ref={ref} aria-label="Interactive TradingView chart" className="tradingview-widget-container chart-widget" />;
+  const config = { autosize: true, symbol, interval: '15', timezone: 'Etc/UTC', theme, style: '1', locale: 'en', hide_side_toolbar: false, allow_symbol_change: true, calendar: false, support_host: 'https://www.tradingview.com' };
+  const src = `https://www.tradingview-widget.com/embed-widget/advanced-chart/?locale=en#${encodeURIComponent(JSON.stringify(config))}`;
+  return <iframe key={`${symbol}-${theme}`} src={src} title="Interactive TradingView chart" className="chart-widget border-0" allowFullScreen />;
 }
