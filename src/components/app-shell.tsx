@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ChartCandlestick, List, ArrowLeftRight, Menu, ChevronLeft } from "lucide-react";
+import { ChartCandlestick, List, ArrowLeftRight, History, Menu, ChevronLeft } from "lucide-react";
 import { quotes, type Quote } from "@/lib/mock-data";
 import { useTheme } from "@/components/theme-provider";
 
@@ -9,19 +9,19 @@ export function Logo() {
 }
 const nav = [
   { to: '/', label: 'Watchlist', icon: List }, { to: '/charts', label: 'Chart', icon: ChartCandlestick },
-  { to: '/signals', label: 'Signals', icon: ArrowLeftRight }, { to: '/menu', label: 'Menu', icon: Menu },
+  { to: '/signals', label: 'Signals', icon: ArrowLeftRight }, { to: '/history', label: 'History', icon: History }, { to: '/menu', label: 'Menu', icon: Menu },
 ] as const;
 export function AppShell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: s => s.location.pathname });
   const chart = path === '/charts';
-  const secondary = !['/', '/signals', '/menu', '/charts'].includes(path);
+  const secondary = !['/', '/signals', '/history', '/menu', '/charts'].includes(path);
   return <div className="min-h-dvh">
     {!chart && <header className="flex h-16 items-center justify-between border-b border-border px-5 md:px-8"><Link to="/" aria-label="TradeXify watchlist"><Logo /></Link></header>}
     <main className={chart ? '' : 'terminal-content mx-auto max-w-7xl px-5 pt-7 md:px-8 md:pt-9'}>
       {secondary && <Link to="/menu" className="mb-6 inline-flex items-center gap-1 text-xs text-muted-foreground"><ChevronLeft className="h-4 w-4" />Menu</Link>}{children}
     </main>
     <nav aria-label="Main navigation" className="terminal-nav fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background">
-      <div className="mx-auto grid h-16 max-w-2xl grid-cols-4">{nav.map(({ to, label, icon: Icon }) => <Link key={to} to={to} activeOptions={{ exact: true }} className="relative flex flex-col items-center justify-center gap-1.5 text-[10px] text-muted-foreground transition-colors data-[status=active]:text-foreground"><Icon className="h-5 w-5" strokeWidth={1.5} />{label}<span className="absolute top-0 hidden h-0.5 w-8 bg-foreground in-data-[status=active]:block" /></Link>)}</div>
+      <div className="mx-auto grid h-16 max-w-2xl grid-cols-5">{nav.map(({ to, label, icon: Icon }) => <Link key={to} to={to} activeOptions={{ exact: true }} className="relative flex flex-col items-center justify-center gap-1.5 text-[10px] text-muted-foreground transition-colors data-[status=active]:text-foreground"><Icon className="h-5 w-5" strokeWidth={1.5} />{label}<span className="absolute top-0 hidden h-0.5 w-8 bg-foreground in-data-[status=active]:block" /></Link>)}</div>
     </nav>
   </div>;
 }
