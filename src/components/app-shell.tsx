@@ -16,7 +16,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const chart = path === '/charts';
   const secondary = !['/', '/signals', '/menu', '/charts'].includes(path);
   return <div className="min-h-dvh">
-    {!chart && <header className="flex h-16 items-center justify-between border-b border-border px-5 md:px-8"><Link to="/" aria-label="TradeXify watchlist"><Logo /></Link><span className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" />DEMO FEED</span></header>}
+    {!chart && <header className="flex h-16 items-center justify-between border-b border-border px-5 md:px-8"><Link to="/" aria-label="TradeXify watchlist"><Logo /></Link></header>}
     <main className={chart ? '' : 'terminal-content mx-auto max-w-7xl px-5 pt-7 md:px-8 md:pt-9'}>
       {secondary && <Link to="/menu" className="mb-6 inline-flex items-center gap-1 text-xs text-muted-foreground"><ChevronLeft className="h-4 w-4" />Menu</Link>}{children}
     </main>
