@@ -21,18 +21,18 @@
 :root {
   --background: oklch(0.985 0 0); --foreground: oklch(0.145 0 0); --card: oklch(1 0 0);
   --surface: oklch(0.96 0 0); --primary: oklch(0.145 0 0); --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.93 0 0); --muted-foreground: oklch(0.48 0 0); --border: oklch(0.88 0 0);
+  --secondary: oklch(0.93 0 0); --muted-foreground: oklch(0.42 0 0); --border: oklch(0.86 0 0);
   --bull: oklch(0.51 0.12 158); --bear: oklch(0.56 0.17 25);
 }
 .dark {
-  --background: oklch(0.11 0.005 260); --foreground: oklch(1 0 0); --card: oklch(0.155 0.006 260);
+  --background: oklch(0.1 0.005 260); --foreground: oklch(1 0 0); --card: oklch(0.17 0.007 260);
   --surface: oklch(0 0 0); --primary: oklch(1 0 0); --primary-foreground: oklch(0.13 0 0);
-  --secondary: oklch(0.21 0.008 260); --muted-foreground: oklch(0.7 0.01 260); --border: oklch(0.2 0.008 260);
+  --secondary: oklch(0.23 0.009 260); --muted-foreground: oklch(0.78 0.01 260); --border: oklch(0.24 0.009 260);
   --bull: oklch(0.74 0.17 158); --bear: oklch(0.66 0.21 25);
 }
 @layer base {
   * { border-color: var(--border); letter-spacing: 0 !important; }
-  body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   button, a, input { -webkit-tap-highlight-color: transparent; }
   button, a { touch-action: manipulation; }
   ::selection { background: var(--secondary); }
