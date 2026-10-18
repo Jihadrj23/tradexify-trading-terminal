@@ -12,5 +12,6 @@
 ## Application conventions
 - Shared terminal navigation belongs in AppShell; the chart route omits the header and fills the available viewport to keep charting distraction-free.
 - ThemeProvider owns client-side appearance preference; semantic CSS tokens theme the entire terminal and external chart consistently.
+- Menu opens appearance controls in the shared Dialog primitive, keeping the main menu compact and theme ownership in ThemeProvider.
 - Legal content remains in dedicated metadata-bearing routes, discoverable through the Menu legal disclosure rather than a global footer.
 - Embed TradingView directly in a theme-aware iframe instead of injecting its script, avoiding duplicate script execution during React lifecycle changes.

@@ -3,3 +3,5 @@
 - [x] Redesign watchlist and signal presentation.
 - [x] Add viewport-filling chart and theme settings.
 - [x] Move legal information into Menu and verify navigation on mobile and desktop.
+- [x] Move appearance controls into a Settings modal.
+- [x] Add History to the bottom navigation and verify both flows.
