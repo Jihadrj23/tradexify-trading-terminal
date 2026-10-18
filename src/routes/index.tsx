@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
 
 function Quotes() {
   const qs = useLiveQuotes();
-  const gold = qs[0];
+  const gold = qs[0]!;
   const up = gold.change >= 0;
   return (
     <div className="space-y-4">

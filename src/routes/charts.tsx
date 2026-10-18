@@ -16,7 +16,7 @@ const symbols = [
 ];
 
 function Charts() {
-  const [sym, setSym] = useState(symbols[0].v);
+  const [sym, setSym] = useState(symbols[0]!.v);
   return (
     <div>
       <PageTitle title="Charts" sub="Live technical analysis" />
