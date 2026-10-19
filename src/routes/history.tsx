@@ -39,9 +39,9 @@ function HistoryPage() {
 
 function Kpi({ l, v, cls = "" }: { l: string; v: string; cls?: string }) {
   return (
-    <div className="card-premium p-3">
-      <p className="text-[11px] text-muted-foreground">{l}</p>
-      <p className={`font-mono text-xl font-bold ${cls}`}>{v}</p>
+    <div className="card-premium p-4">
+      <p className="text-[11px] font-semibold uppercase text-muted-foreground">{l}</p>
+      <p className={`mt-1 font-mono text-2xl font-bold ${cls}`}>{v}</p>
     </div>
   );
 }
