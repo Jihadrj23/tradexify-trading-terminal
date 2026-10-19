@@ -82,7 +82,7 @@ function Quotes() {
 
   return <div>
     <div className="mb-4 flex items-center justify-between"><h1 className="text-2xl font-bold md:text-3xl">Watchlist</h1>
-      <label className="flex h-8 items-center gap-2 rounded-md bg-secondary px-2.5 text-muted-foreground"><Search className="h-3.5 w-3.5" /><input aria-label="Search markets" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search" className="w-24 bg-transparent text-xs text-foreground outline-none" /></label>
+      <label className="flex h-9 w-36 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-muted-foreground focus-within:border-foreground sm:w-56"><Search className="h-4 w-4 shrink-0" /><input aria-label="Search markets" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search" className="w-full min-w-0 bg-transparent text-sm font-medium text-foreground outline-none" /></label>
     </div>
     <div className="mb-3 flex items-center gap-2 overflow-x-auto border-b border-border pb-3">
       <button onClick={() => setActive(-1)} className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold ${active === -1 ? 'bg-primary text-primary-foreground' : 'bg-secondary text-muted-foreground'}`}>Watchlist</button>
