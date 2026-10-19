@@ -25,10 +25,10 @@
   --bull: oklch(0.51 0.12 158); --bear: oklch(0.56 0.17 25);
 }
 .dark {
-  --background: oklch(0.1 0.005 260); --foreground: oklch(1 0 0); --card: oklch(0.17 0.007 260);
-  --surface: oklch(0 0 0); --primary: oklch(1 0 0); --primary-foreground: oklch(0.13 0 0);
-  --secondary: oklch(0.23 0.009 260); --muted-foreground: oklch(0.78 0.01 260); --border: oklch(0.24 0.009 260);
-  --bull: oklch(0.74 0.17 158); --bear: oklch(0.66 0.21 25);
+  --background: oklch(0 0 0); --foreground: oklch(1 0 0); --card: oklch(0.175 0 0);
+  --surface: oklch(0 0 0); --primary: oklch(1 0 0); --primary-foreground: oklch(0 0 0);
+  --secondary: oklch(0.235 0 0); --muted-foreground: oklch(0.8 0 0); --border: oklch(0.255 0 0);
+  --bull: oklch(0.76 0.19 155); --bear: oklch(0.67 0.22 25);
 }
 @layer base {
   * { border-color: var(--border); letter-spacing: 0 !important; }
@@ -37,7 +37,7 @@
   button, a { touch-action: manipulation; }
   ::selection { background: var(--secondary); }
 }
-@utility card-premium { background: var(--card); border: 1px solid var(--border); border-radius: 6px; }
+@utility card-premium { background: linear-gradient(180deg, color-mix(in oklab, var(--card) 100%, var(--foreground) 3%), var(--card)); border: 1px solid var(--border); border-radius: 8px; box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 6%, transparent); backdrop-filter: blur(12px); }
 @utility text-brand-gradient { color: var(--foreground); }
 @utility bg-brand-gradient { background: var(--primary); }
 @utility shadow-glow { box-shadow: none; }
