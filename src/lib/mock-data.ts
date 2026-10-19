@@ -2,7 +2,7 @@
 // (e.g. `${API_BASE}/api/quotes`) — shapes mirror the expected JSON.
 export const API_BASE = "https://api.tradexify.online";
 
-export type Quote = { symbol: string; name: string; bid: number; ask: number; high: number; low: number; change: number; digits: number };
+export type Category = "metals" | "crypto" | "forex";
 export type Rule = { name: string; vote: "BUY" | "SELL" | "NEUTRAL" };
 export type Signal = {
   id: string; symbol: string; side: "BUY" | "SELL"; entry: number; sl: number; tp1: number; tp2: number;
@@ -10,14 +10,34 @@ export type Signal = {
 };
 export type HistoryItem = { id: string; symbol: string; side: "BUY" | "SELL"; entry: number; exit: number; pips: number; result: "WIN" | "LOSS" | "BE"; date: string };
 export type Alert = { id: string; title: string; body: string; time: string; type: "signal" | "tp" | "sl" | "system" };
+export type Quote = { symbol: string; name: string; category: Category; tv: string; bid: number; ask: number; high: number; low: number; open: number; change: number; digits: number };
 
-export const quotes: Quote[] = [
-  { symbol: "XAUUSD", name: "Gold vs US Dollar", bid: 2648.35, ask: 2648.65, high: 2661.2, low: 2631.8, change: 0.84, digits: 2 },
-  { symbol: "BTCUSD", name: "Bitcoin", bid: 67420.5, ask: 67445.5, high: 68210, low: 66105, change: 1.92, digits: 1 },
-  { symbol: "ETHUSD", name: "Ethereum", bid: 2612.4, ask: 2613.6, high: 2655.1, low: 2570.2, change: -0.65, digits: 2 },
-  { symbol: "XAGUSD", name: "Silver vs US Dollar", bid: 31.42, ask: 31.45, high: 31.88, low: 31.05, change: 0.37, digits: 3 },
-  { symbol: "EURUSD", name: "Euro vs US Dollar", bid: 1.08642, ask: 1.08651, high: 1.0891, low: 1.0842, change: -0.12, digits: 5 },
+// [symbol, name, category, tvSymbol, price, spread, change%, digits]
+const raw: [string, string, Category, string, number, number, number, number][] = [
+  ["XAUUSD", "Gold Spot / US Dollar", "metals", "OANDA:XAUUSD", 2648.35, 0.3, 0.84, 2],
+  ["XAGUSD", "Silver / US Dollar", "metals", "OANDA:XAGUSD", 31.42, 0.03, 0.37, 3],
+  ["XAUEUR", "Gold / Euro", "metals", "OANDA:XAUEUR", 2437.6, 0.4, 0.96, 2],
+  ["XAUJPY", "Gold / Japanese Yen", "metals", "OANDA:XAUJPY", 397850, 45, -0.21, 0],
+  ["BTCUSD", "Bitcoin / US Dollar", "crypto", "BITSTAMP:BTCUSD", 67420.5, 25, 1.92, 1],
+  ["ETHUSD", "Ethereum / US Dollar", "crypto", "BITSTAMP:ETHUSD", 2612.4, 1.2, -0.65, 2],
+  ["SOLUSD", "Solana / US Dollar", "crypto", "COINBASE:SOLUSD", 152.84, 0.08, 3.41, 2],
+  ["XRPUSD", "XRP / US Dollar", "crypto", "BITSTAMP:XRPUSD", 0.5432, 0.0004, -1.18, 4],
+  ["ADAUSD", "Cardano / US Dollar", "crypto", "COINBASE:ADAUSD", 0.3528, 0.0003, 0.74, 4],
+  ["BNBUSD", "BNB / US Dollar", "crypto", "BINANCE:BNBUSDT", 594.2, 0.4, -0.32, 2],
+  ["DOGEUSD", "Dogecoin / US Dollar", "crypto", "BINANCE:DOGEUSDT", 0.11842, 0.00008, 2.65, 5],
+  ["EURUSD", "Euro / US Dollar", "forex", "OANDA:EURUSD", 1.08642, 0.00009, -0.12, 5],
+  ["GBPUSD", "British Pound / US Dollar", "forex", "OANDA:GBPUSD", 1.30514, 0.00012, 0.18, 5],
+  ["USDJPY", "US Dollar / Japanese Yen", "forex", "OANDA:USDJPY", 150.218, 0.012, 0.27, 3],
+  ["AUDUSD", "Australian Dollar / US Dollar", "forex", "OANDA:AUDUSD", 0.66871, 0.0001, -0.41, 5],
+  ["USDCAD", "US Dollar / Canadian Dollar", "forex", "OANDA:USDCAD", 1.38092, 0.00014, 0.09, 5],
+  ["NZDUSD", "New Zealand Dollar / US Dollar", "forex", "OANDA:NZDUSD", 0.60518, 0.00013, -0.36, 5],
+  ["EURGBP", "Euro / British Pound", "forex", "OANDA:EURGBP", 0.83241, 0.0001, -0.29, 5],
+  ["EURJPY", "Euro / Japanese Yen", "forex", "OANDA:EURJPY", 163.198, 0.018, 0.15, 3],
 ];
+export const quotes: Quote[] = raw.map(([symbol, name, category, tv, bid, spread, change, digits]) => {
+  const open = bid / (1 + change / 100);
+  return { symbol, name, category, tv, bid, ask: bid + spread, open, high: Math.max(bid, open) * 1.004, low: Math.min(bid, open) * 0.996, change, digits };
+});
 
 export const activeSignal: Signal = {
   id: "SIG-2041", symbol: "XAUUSD", side: "BUY", entry: 2646.5, sl: 2638.0, tp1: 2655.0, tp2: 2668.0,

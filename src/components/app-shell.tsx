@@ -29,7 +29,8 @@ export function useLiveQuotes(): Quote[] {
   const [data, setData] = useState(quotes);
   const ref = useRef(data);
   useEffect(() => {
-    const id = setInterval(() => { ref.current = ref.current.map(q => { const bid = q.bid + q.bid * (Math.random() - 0.5) * 0.0006; return { ...q, bid, ask: bid + q.ask - q.bid, high: Math.max(q.high, bid), low: Math.min(q.low, bid) }; }); setData(ref.current); }, 1500);
+    // Simulated ticks: swap for a WebSocket/poll to the Python/MT5 backend (API_BASE).
+    const id = setInterval(() => { ref.current = ref.current.map(q => { if (Math.random() < 0.45) return q; const bid = q.bid + q.bid * (Math.random() - 0.5) * 0.0008; return { ...q, bid, ask: bid + q.ask - q.bid, high: Math.max(q.high, bid), low: Math.min(q.low, bid), change: ((bid - q.open) / q.open) * 100 }; }); setData(ref.current); }, 1200);
     return () => clearInterval(id);
   }, []);
   return data;

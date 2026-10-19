@@ -59,3 +59,12 @@
 .icon-eth { background: oklch(0.55 0.12 270); color: oklch(1 0 0); }
 .icon-eur { background: oklch(0.45 0.17 260); color: oklch(0.9 0.15 95); }
 .icon-usd { background: oklch(0.55 0.12 158); color: oklch(1 0 0); }
+.icon-sol { background: linear-gradient(135deg, oklch(0.7 0.2 300), oklch(0.82 0.15 170)); color: oklch(1 0 0); }
+.icon-xrp { background: oklch(0.3 0 0); color: oklch(1 0 0); }
+.icon-ada { background: oklch(0.5 0.17 255); color: oklch(1 0 0); }
+.icon-bnb { background: oklch(0.83 0.16 88); color: oklch(0.2 0.03 85); }
+.icon-doge { background: oklch(0.78 0.12 85); color: oklch(0.25 0.04 85); }
+.badge-bull { background: color-mix(in oklab, var(--bull) 22%, transparent); color: var(--bull); }
+.badge-bear { background: color-mix(in oklab, var(--bear) 22%, transparent); color: var(--bear); }
+.tick-up { background: color-mix(in oklab, var(--bull) 25%, transparent); color: var(--bull); }
+.tick-down { background: color-mix(in oklab, var(--bear) 25%, transparent); color: var(--bear); }
