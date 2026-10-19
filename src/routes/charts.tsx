@@ -4,11 +4,12 @@ import { Maximize, Minimize } from 'lucide-react';
 import { TradingViewChart } from '@/components/app-shell';
 import { Button } from '@/components/ui/button';
 import { seo } from '@/lib/seo';
+import { quotes } from '@/lib/mock-data';
 export const Route = createFileRoute('/charts')({
   validateSearch: (search: Record<string, unknown>): { symbol?: string | undefined } => ({ symbol: typeof search['symbol'] === 'string' ? search['symbol'] : undefined }),
   head: () => seo('Interactive Chart', 'Full-screen TradeXify TradingView charts for gold, crypto and forex markets.'), component: Charts,
 });
-const symbols = [{ l: 'XAUUSD', v: 'OANDA:XAUUSD' }, { l: 'BTCUSD', v: 'BITSTAMP:BTCUSD' }, { l: 'ETHUSD', v: 'BITSTAMP:ETHUSD' }, { l: 'XAGUSD', v: 'OANDA:XAGUSD' }, { l: 'EURUSD', v: 'OANDA:EURUSD' }];
+const symbols = quotes.map(q => ({ l: q.symbol, v: q.tv }));
 function Charts() {
   const { symbol } = Route.useSearch();
   const [selected, setSelected] = useState(symbol ?? 'OANDA:XAUUSD');
