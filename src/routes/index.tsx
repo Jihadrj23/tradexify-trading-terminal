@@ -6,40 +6,51 @@ import { type Quote } from '@/lib/mock-data';
 import { seo } from '@/lib/seo';
 export const Route = createFileRoute('/')({ head: () => seo('Watchlist · Trading Terminal', 'TradeXify gold, crypto and forex watchlist with market quotes and multi-strategy signals.'), component: Quotes });
 
-const tvSymbol: Record<string, string> = { XAUUSD: 'OANDA:XAUUSD', BTCUSD: 'BITSTAMP:BTCUSD', ETHUSD: 'BITSTAMP:ETHUSD', XAGUSD: 'OANDA:XAGUSD', EURUSD: 'OANDA:EURUSD' };
 const categories = [
-  { id: 'metals', label: 'Metals / XAU', symbols: ['XAUUSD', 'XAGUSD'] },
-  { id: 'crypto', label: 'Crypto', symbols: ['BTCUSD', 'ETHUSD'] },
-  { id: 'forex', label: 'Forex', symbols: ['EURUSD'] },
+  { id: 'metals', label: 'Metals / XAU' },
+  { id: 'crypto', label: 'Crypto' },
+  { id: 'forex', label: 'Forex' },
 ] as const;
 
-const icons: Record<string, { a: string; b?: string; cls: string }> = {
-  XAUUSD: { a: 'Au', cls: 'icon-gold' },
-  XAGUSD: { a: 'Ag', cls: 'icon-silver' },
-  BTCUSD: { a: '₿', cls: 'icon-btc' },
-  ETHUSD: { a: 'Ξ', cls: 'icon-eth' },
-  EURUSD: { a: '€', b: '$', cls: 'icon-eur' },
+const flags: Record<string, string> = { USD: '🇺🇸', EUR: '🇪🇺', GBP: '🇬🇧', JPY: '🇯🇵', AUD: '🇦🇺', CAD: '🇨🇦', NZD: '🇳🇿' };
+const coins: Record<string, { a: string; cls: string }> = {
+  XAU: { a: 'Au', cls: 'icon-gold' }, XAG: { a: 'Ag', cls: 'icon-silver' }, BTC: { a: '₿', cls: 'icon-btc' }, ETH: { a: 'Ξ', cls: 'icon-eth' },
+  SOL: { a: 'S', cls: 'icon-sol' }, XRP: { a: 'X', cls: 'icon-xrp' }, ADA: { a: '₳', cls: 'icon-ada' }, BNB: { a: 'B', cls: 'icon-bnb' }, DOGE: { a: 'Ð', cls: 'icon-doge' },
 };
 
+function Flag({ c, small }: { c: string; small?: boolean }) {
+  return <span className={`grid place-items-center overflow-hidden rounded-full bg-secondary ${small ? 'h-4 w-4 text-[10px] ring-2 ring-background' : 'h-9 w-9 text-[22px]'}`}>{flags[c] ?? c[0]}</span>;
+}
 function AssetIcon({ symbol }: { symbol: string }) {
-  const i = icons[symbol] ?? { a: symbol[0] ?? '?', cls: 'icon-silver' };
+  const base = symbol.replace(/(USD|EUR|JPY|GBP|CAD)$/, '');
+  const quote = symbol.slice(base.length);
+  const coin = coins[base];
   return <span className="relative h-9 w-9 shrink-0">
-    <span className={`grid h-9 w-9 place-items-center rounded-full text-[13px] font-bold ${i.cls}`}>{i.a}</span>
-    {i.b && <span className="icon-usd absolute -bottom-0.5 -right-0.5 grid h-4 w-4 place-items-center rounded-full border-2 border-background text-[8px] font-bold">{i.b}</span>}
+    {coin ? <span className={`grid h-9 w-9 place-items-center rounded-full text-[14px] font-bold shadow-sm ${coin.cls}`}>{coin.a}</span> : <Flag c={base} />}
+    {(!coin || quote !== 'USD') && <span className="absolute -bottom-0.5 -right-0.5"><Flag c={quote} small /></span>}
   </span>;
 }
 
 function QuoteRow({ q }: { q: Quote }) {
   const up = q.change >= 0;
-  const abs = (q.bid * q.change) / 100;
-  return <Link to="/charts" search={{ symbol: tvSymbol[q.symbol] }} className="flex items-center gap-3 border-b border-border px-1 py-3.5 transition-colors hover:bg-card">
-    <AssetIcon symbol={q.symbol} />
-    <div className="min-w-0 flex-1"><p className="text-[15px] font-bold">{q.symbol}</p><p className="truncate text-[11px] text-muted-foreground">{q.name}</p></div>
-    <div className="text-right">
-      <p className={`font-mono text-[15px] font-bold ${up ? 'text-bull' : 'text-bear'}`}>{q.bid.toFixed(q.digits)}</p>
-      <div className="mt-1 flex items-center justify-end gap-1.5">
+  const abs = q.bid - q.open;
+  const prev = useRef(q.bid);
+  const [flash, setFlash] = useState<'' | 'tick-up' | 'tick-down'>('');
+  useEffect(() => {
+    if (q.bid === prev.current) return;
+    setFlash(q.bid > prev.current ? 'tick-up' : 'tick-down'); prev.current = q.bid;
+    const t = setTimeout(() => setFlash(''), 600); return () => clearTimeout(t);
+  }, [q.bid]);
+  return <Link to="/charts" search={{ symbol: q.tv }} className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-border px-1 py-3 transition-colors hover:bg-card">
+    <div className="flex min-w-0 items-center gap-3">
+      <AssetIcon symbol={q.symbol} />
+      <div className="min-w-0"><p className="text-[15px] font-bold leading-tight">{q.symbol}</p><p className="truncate text-[11px] text-muted-foreground">{q.name}</p></div>
+    </div>
+    <div className="flex flex-col items-end gap-1 tabular-nums">
+      <p className={`rounded px-1 font-mono text-[15px] font-bold leading-tight transition-colors ${flash} ${flash ? '' : 'text-foreground'}`}>{q.bid.toFixed(q.digits)}</p>
+      <div className="flex items-center gap-1.5">
         <span className={`font-mono text-[11px] font-semibold ${up ? 'text-bull' : 'text-bear'}`}>{up ? '+' : ''}{abs.toFixed(q.digits)}</span>
-        <span className={`rounded px-1.5 py-0.5 font-mono text-[11px] font-bold ${up ? 'bg-bull text-background' : 'bg-bear text-background'}`}>{up ? '+' : ''}{q.change.toFixed(2)}%</span>
+        <span className={`w-[62px] rounded px-1.5 py-0.5 text-center font-mono text-[11px] font-bold ${up ? 'badge-bull' : 'badge-bear'}`}>{up ? '+' : ''}{q.change.toFixed(2)}%</span>
       </div>
     </div>
   </Link>;
