@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Search, ChevronDown, Plus, X, Check } from 'lucide-react';
 import { useLiveQuotes } from '@/components/app-shell';
 import { type Quote } from '@/lib/mock-data';
@@ -111,7 +111,7 @@ function Quotes() {
     {current ? <>
       <div className="border-t border-border">{qs.filter(q => current.symbols.includes(q.symbol) && match(q)).map(q => <QuoteRow key={q.symbol} q={q} />)}</div>
       <button onClick={() => remove(active)} className="mt-4 text-xs text-bear">Delete this list</button>
-    </> : categories.map(c => <CategoryGroup key={c.id} label={c.label} rows={qs.filter(q => (c.symbols as readonly string[]).includes(q.symbol) && match(q))} />)}
+    </> : categories.map(c => <CategoryGroup key={c.id} label={c.label} rows={qs.filter(q => q.category === c.id && match(q))} />)}
     {qs.filter(match).length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">No matching instruments</p>}
   </div>;
 }
