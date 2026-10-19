@@ -3,6 +3,13 @@
 export const API_BASE = "https://api.tradexify.online";
 
 export type Category = "metals" | "crypto" | "forex";
+export type Rule = { name: string; vote: "BUY" | "SELL" | "NEUTRAL" };
+export type Signal = {
+  id: string; symbol: string; side: "BUY" | "SELL"; entry: number; sl: number; tp1: number; tp2: number;
+  confidence: number; rules: Rule[]; createdAt: string;
+};
+export type HistoryItem = { id: string; symbol: string; side: "BUY" | "SELL"; entry: number; exit: number; pips: number; result: "WIN" | "LOSS" | "BE"; date: string };
+export type Alert = { id: string; title: string; body: string; time: string; type: "signal" | "tp" | "sl" | "system" };
 export type Quote = { symbol: string; name: string; category: Category; tv: string; bid: number; ask: number; high: number; low: number; open: number; change: number; digits: number };
 
 // [symbol, name, category, tvSymbol, price, spread, change%, digits]
